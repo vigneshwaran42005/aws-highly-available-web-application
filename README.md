@@ -315,7 +315,7 @@ The project demonstrates practical knowledge of **AWS Cloud Infrastructure, Netw
 
 ## 👨‍💻 Author
 
-**Vignesh Waran**
+**Vigneshwaran**
 
 AWS Cloud Engineer Aspirant | 2026 Graduate
 
