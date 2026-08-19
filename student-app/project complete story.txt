@@ -1,0 +1,295 @@
+AWS-Based Highly Available Web Application
+1. VPC & Network Infrastructure
+
+Designed and configured an AWS VPC with a secure public and private network architecture.
+
+AWS components used:
+
+Amazon VPC
+Public Subnets
+Private Application Subnets
+Private Database Subnets
+Availability Zones
+Internet Gateway
+NAT Gateway
+Route Tables
+
+Purpose:
+To create a secure, organized, and highly available cloud network by separating public-facing and private resources.
+
+2. Bastion Host
+
+Configured a Bastion Host in the public subnet to securely access the private Windows EC2 instances.
+
+Local Computer
+      ↓
+Bastion Host
+      ↓
+Private EC2
+
+Skill demonstrated:
+Secure access to private infrastructure using a jump server/Bastion Host.
+
+3. Two Private EC2 Application Servers
+
+Deployed two Windows EC2 instances in separate Availability Zones.
+
+EC2-A → Private Subnet → AZ-A
+
+
+EC2-B → Private Subnet → AZ-B
+
+Both instances were configured to host the application.
+
+Purpose:
+To provide redundancy and improve application availability.
+
+Skills demonstrated:
+
+Amazon EC2
+Windows Server
+Private Subnet Deployment
+Multi-AZ Architecture
+4. IIS Web Server
+
+Installed and configured IIS (Internet Information Services) on both Windows EC2 instances.
+
+Created separate test pages:
+
+EC2-A → Server A Page
+
+
+EC2-B → Server B Page
+
+This was used to verify that both application servers were working correctly before integrating the application.
+
+Skills demonstrated:
+
+IIS
+Windows Server Administration
+Web Server Configuration
+5. Application Load Balancer
+
+Configured an Internet-facing Application Load Balancer across two public subnets in different Availability Zones.
+
+Internet
+    ↓
+Application Load Balancer : 80
+    ↓
+Target Group
+    ↓
+EC2-A / EC2-B
+
+Registered both private EC2 instances with the Target Group and configured health checks.
+
+Both targets were verified as:
+
+EC2-A → Healthy
+EC2-B → Healthy
+
+Skills demonstrated:
+
+Application Load Balancer
+Target Groups
+Health Checks
+Traffic Distribution
+High Availability
+6. Flask Web Application
+
+After validating the IIS configuration, developed a simple Student Details application using:
+
+HTML
+CSS
+Python
+Flask
+
+The application provides a simple form for entering:
+
+Name
+Standard
+Roll Number
+
+
+[Submit]
+
+When the user submits the form, Flask processes the request and stores the information in the database.
+
+Skills demonstrated:
+
+Python
+Flask
+HTML
+CSS
+Backend Development
+7. Amazon Aurora PostgreSQL
+
+Created Amazon Aurora PostgreSQL as the database layer.
+
+Configuration:
+
+PostgreSQL
+Port: 5432
+Private database access
+Writer Endpoint
+Reader Endpoint
+Database hosted within the private network
+
+Public access was disabled to prevent direct Internet access to the database.
+
+Purpose:
+To provide a secure and managed relational database for storing student information.
+
+Skills demonstrated:
+
+Amazon Aurora
+PostgreSQL
+Database Management
+Private Database Architecture
+8. Security Groups
+
+Implemented Security Groups to control communication between the different layers.
+
+Internet
+   ↓
+ALB : 80
+   ↓
+EC2 : 80
+   ↓
+Aurora : 5432
+
+The database Security Group allows PostgreSQL traffic only from the application EC2 Security Group.
+
+ALB-SG
+   ↓
+EC2-SG : Port 80
+   ↓
+Aurora-SG : Port 5432
+
+The database was not exposed directly to the Internet.
+
+Skills demonstrated:
+
+AWS Security Groups
+Network Security
+Access Control
+Private Database Security
+Least-Privilege Network Access
+9. EC2 → Aurora Connectivity Testing
+
+Verified connectivity between the private EC2 application server and Aurora PostgreSQL using:
+
+Test-NetConnection <Aurora-Endpoint> -Port 5432
+
+The connectivity test returned:
+
+TcpTestSucceeded : True
+
+This confirmed that the private application server could successfully communicate with the Aurora PostgreSQL database over port 5432.
+
+Skills demonstrated:
+
+Network Troubleshooting
+TCP/IP
+PostgreSQL Connectivity
+AWS Security Group Troubleshooting
+10. Student Data Storage
+
+Implemented database storage through the Flask backend.
+
+The application follows this flow:
+
+Student Form
+     ↓
+Flask Backend
+     ↓
+INSERT Query
+     ↓
+Aurora PostgreSQL
+     ↓
+student_details
+
+Example database record:
+
+ID | Name    | Standard | Roll No
+---|---------|----------|--------
+1  | Vignesh | 12th     | 101
+
+The UI is designed primarily for data entry, while the student records are stored securely in the backend database.
+
+11. Final Application Architecture
+                         INTERNET
+                             │
+                             ▼
+                  ┌────────────────────┐
+                  │ Application        │
+                  │ Load Balancer      │
+                  │ HTTP : 80          │
+                  └─────────┬──────────┘
+                            │
+                 ┌──────────┴──────────┐
+                 ▼                     ▼
+        ┌─────────────────┐   ┌─────────────────┐
+        │ Private EC2-A   │   │ Private EC2-B   │
+        │ IIS + Flask     │   │ IIS + Flask     │
+        │ AZ-A            │   │ AZ-B            │
+        └────────┬────────┘   └────────┬────────┘
+                 │                     │
+                 └──────────┬──────────┘
+                            ▼
+                  ┌────────────────────┐
+                  │ Aurora PostgreSQL  │
+                  │ Port : 5432        │
+                  │ Private Database   │
+                  └────────────────────┘
+Complete Request Flow
+User
+ ↓
+Internet
+ ↓
+Application Load Balancer
+ ↓
+Healthy Private EC2 Instance
+ ↓
+IIS / Flask Application
+ ↓
+Aurora PostgreSQL
+ ↓
+Student Data Stored
+What I Demonstrated Through This Project
+
+This project demonstrates hands-on experience in:
+
+AWS Cloud
+Amazon VPC
+Amazon EC2
+Application Load Balancer
+Target Groups
+Amazon Aurora PostgreSQL
+IAM
+Security Groups
+NAT Gateway
+Internet Gateway
+Route Tables
+Availability Zones
+Development
+Python
+Flask
+HTML
+CSS
+PostgreSQL
+Networking
+Public and Private Subnets
+Bastion Host
+TCP/IP
+Port 80
+Port 5432
+Routing
+Private Network Connectivity
+Cloud Concepts
+High Availability
+Load Balancing
+Multi-AZ Deployment
+Private Infrastructure
+Database Security
+Network Segmentation
+End-to-End Application Deployment
